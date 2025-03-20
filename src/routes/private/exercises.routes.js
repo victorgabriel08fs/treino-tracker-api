@@ -3,6 +3,6 @@ import { exerciseController } from "../../controllers/ExerciseController.js";
 
 const exercisesRoutes = express.Router();
 
-exercisesRoutes.post("/:id", exerciseController.alternate);
+exercisesRoutes.post("/:id/alternate", exerciseController.alternate);
 
 export default exercisesRoutes;

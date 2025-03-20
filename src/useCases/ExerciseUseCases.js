@@ -28,12 +28,15 @@ class ExerciseUseCases {
     return exercise;
   }
 
-  async alternate(id, isCompleted) {
-    const exercise = await prisma.exercise.update({
+  async alternate(id) {
+    const exercise = await prisma.exercise.findUnique({ where: { id } });
+    if(!exercise) return null;
+    const isCompleted = !exercise.isCompleted;
+    const updatedExercise = await prisma.exercise.update({
       where: { id },
       data: { isCompleted },
     });
-    return exercise;
+    return updatedExercise;
   }
 }
 
