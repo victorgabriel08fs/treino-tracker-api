@@ -8,10 +8,11 @@ class Auth {
     if (!token) {
       return res.status(401).json({ message: "Token not found" });
     }
+    
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
-      next();
+      return next();
     } catch (error) {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -35,7 +36,6 @@ class Auth {
           where: { id: user.id },
           data: { password: hash },
         });
-
       } catch (error) {
         console.error("Erro ao atualizar senha:", error);
       }
