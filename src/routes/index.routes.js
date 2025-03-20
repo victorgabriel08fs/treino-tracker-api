@@ -6,6 +6,6 @@ import usersRoutes from './private/users.routes.js';
 const routes = express.Router();
 
 routes.use('/auth', authRoutes);
-routes.use('/users', usersRoutes);
+routes.use('/users', autenticateMiddleware.handle, usersRoutes);
 
 export default routes;
