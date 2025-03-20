@@ -24,7 +24,7 @@ class Auth {
 
   async login(data) {
     const { email, password } = data;
-    var user = await prisma.user.findUnique({ where: { email } });
+    var user = await prisma.user.findFirst({ where: { email } });
     if (!user) return null;
     if (user.password === null) {
       await prisma.user.update({
@@ -34,7 +34,7 @@ class Auth {
         },
       });
     }
-    user = await prisma.user.findUnique({ where: { email } });
+    user = await prisma.user.findFirst({ where: { email } });
     const isValid = await this.comparePassword(password, user.password);
     if (!isValid) return null;
     return user;
