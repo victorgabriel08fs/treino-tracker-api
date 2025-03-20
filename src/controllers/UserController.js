@@ -3,8 +3,12 @@ import prisma from "../utils/client.js";
 class UserController {
   async index(req, res) {
     try {
-      const users = [];
-      console.log(users);
+      const users = await prisma.user.findMany({
+        include: {
+          role: true,
+        },
+      });
+      console
       return res.json(users);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
