@@ -8,7 +8,6 @@ class UserController {
           role: true,
         },
       });
-      console
       return res.json(users);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
