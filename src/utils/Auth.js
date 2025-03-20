@@ -27,14 +27,20 @@ class Auth {
     var user = await prisma.user.findFirst({ where: { email } });
     if (!user) return null;
     if (user.password === null) {
-      const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(password, salt);
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          password: hash,
-        },
-      });
+      try {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { password: hash },
+        });
+
+        res.json({ message: "Senha atualizada com sucesso!" });
+      } catch (error) {
+        console.error("Erro ao atualizar senha:", error);
+        res.status(500).json({ error: "Erro interno no servidor" });
+      }
     }
     user = await prisma.user.findFirst({ where: { email } });
     const isValid = await this.comparePassword(password, user.password);
