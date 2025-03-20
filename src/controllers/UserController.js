@@ -2,17 +2,22 @@ import prisma from "../utils/client.js";
 
 class UserController {
   async index(req, res) {
-    const users = await prisma.user.findMany({
-      include: {
-        role: true,
-        workouts: {
-          include: {
-            exercises: true,
+    try {
+      const users = await prisma.user.findMany({
+        include: {
+          role: true,
+          workouts: {
+            include: {
+              exercises: true,
+            },
           },
         },
-      },
-    });
-    return res.json(users);
+      });
+      return res.json(users);
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+      return res.status(500).json({ message: "Erro ao buscar usuários" });
+    }
   }
 }
 
