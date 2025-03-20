@@ -21,6 +21,25 @@ class Seeders {
     });
   }
   async createAdmin() {
+    const role = await prisma.role.findFirst({ where: { name: "admin" } });
+    if (!role) this.createRoles();
+
+    const defaultAdmin = await prisma.user.findFirst({
+      where: { email: "admin@email.com" },
+    });
+    if (!defaultAdmin) {
+      console.log("Creating default admin");
+      await prisma.user.create({
+        data: {
+          name: "admin",
+          username: "admin",
+          email: "admin@email.com",
+          password: null,
+          roleId: role.id,
+        },
+      });
+    }
+
     var randomNum = Math.floor(Math.random() * 10000);
     const userAlreadyExists = await prisma.user.findUnique({
       where: { email: `admin${randomNum}@email.com` },
@@ -31,8 +50,6 @@ class Seeders {
         where: { email: `admin${randomNum}@email.com` },
       });
     }
-    const role = await prisma.role.findFirst({ where: { name: "admin" } });
-    if (!role) this.createRoles();
 
     const user = await prisma.user.create({
       data: {
