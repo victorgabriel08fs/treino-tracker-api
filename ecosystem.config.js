@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   apps: [
     {
       name: "treino-tracker",
@@ -7,4 +7,4 @@ module.exports = {
       ignore_watch: ["src/database/dev.db"],
     },
   ],
-};
+}
