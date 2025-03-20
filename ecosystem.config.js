@@ -1,10 +1,10 @@
-module.exports = {
+export default {
   apps: [
     {
       name: "treino-tracker",
-      script: "src/index.js", // ou o seu arquivo de entrada
+      script: "src/index.js",
       watch: true,
-      ignore_watch: ["src/database/dev.db"], // Ignora mudanças no banco de dados
+      ignore_watch: ["src/database/dev.db"],
     },
   ],
 };
