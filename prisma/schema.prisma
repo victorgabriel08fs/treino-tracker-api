@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../src/database/dev.db"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  username  String
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  password  String?
+  workouts  Workout[]
+  role      Role      @relation(fields: [roleId], references: [id])
+  roleId    String
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String
+  level     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
+model Workout {
+  id           String     @id @default(uuid())
+  name         String
+  date         DateTime
+  duration     Int
+  realDuration Int
+  notes        String?
+  workoutType  String
+  exercises    Exercise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+}
+
+model Exercise {
+  id          String   @id @default(uuid())
+  name        String
+  sets        Int
+  reps        Int
+  weight      Decimal
+  isCompleted Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Workout     Workout? @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workoutId   String?
+}
