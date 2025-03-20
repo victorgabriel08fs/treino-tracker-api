@@ -8,10 +8,14 @@ class AuthController {
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
     const token = await auth.generateToken(user);
 
+    req.user = user;
+
     res.status(200).json({ user, token, message: "Login successful" });
   }
 
   async logout(req, res) {
+    req.user = null;
+    req.headers.authorization = null;
     res.status(200).json({ message: "Logout successful" });
   }
 }
