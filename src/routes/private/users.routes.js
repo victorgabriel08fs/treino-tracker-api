@@ -1,6 +1,7 @@
 import express from "express";
+import { userController } from "../../controllers/UserController.js";
 const usersRoutes = express.Router();
 
-usersRoutes.use("/", (req, res) => res.json({ message: "Users" }));
+usersRoutes.use("/", userController.index);
 
 export default usersRoutes;
