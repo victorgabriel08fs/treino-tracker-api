@@ -27,10 +27,12 @@ class Auth {
     var user = await prisma.user.findFirst({ where: { email } });
     if (!user) return null;
     if (user.password === null) {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(password, salt);
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          password: await bcrypt.hash(password, 10),
+          password: hash,
         },
       });
     }
