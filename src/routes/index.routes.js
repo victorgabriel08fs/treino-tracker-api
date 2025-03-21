@@ -7,6 +7,7 @@ import privateRoutes from "./private/private.routes.js";
 
 const routes = express.Router();
 
+routes.get("/", (req, res) => res.json({message:"ping!"}));
 routes.use(publicRoutes);
 routes.use(autenticateMiddleware.handle, privateRoutes);
 
