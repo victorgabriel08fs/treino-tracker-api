@@ -54,10 +54,10 @@ model Workout {
 model Exercise {
   id          String   @id @default(uuid())
   name        String
-  sets        Int
-  reps        Int
-  weight      Decimal
-  isCompleted Boolean
+  sets        Int?
+  reps        Int?
+  weight      Decimal?
+  isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   Workout     Workout? @relation(fields: [workoutId], references: [id], onDelete: Cascade)

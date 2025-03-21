@@ -50,10 +50,45 @@ class UserUseCases {
   }
 
   async import(data) {
-    const user = await prisma.user.create({ data });
+    const role = await prisma.role.findFirst({ where: { name: "user" } });
+    const userAlreadyExists = await prisma.user.findFirst({
+      where: { email: data.email },
+    });
+    if (userAlreadyExists) return null;
+    const userData = {
+      name: data.name,
+      username: data.username,
+      email: data.email,
+      roleId: role.id,
+    };
+    const user = await prisma.user.create({ data: userData });
+    data.workouts.map(async (workoutData) => {
+      let workout = await prisma.workout.create({
+        data: {
+          name: workoutData.name,
+          date: new Date(workoutData.date),
+          duration: workoutData.duration,
+          realDuration: workoutData?.realDuration,
+          notes: workoutData?.notes,
+          workoutType: workoutData.workoutType,
+          userId: user.id,
+        },
+      });
+      workoutData.exercises.map(async (exercise) => {
+        await prisma.exercise.create({
+          data: {
+            name: exercise.name,
+            sets: exercise.sets,
+            reps: exercise.reps,
+            weight: exercise.weight,
+            isCompleted: exercise.isCompleted,
+            workoutId: workout.id,
+          },
+        });
+      });
+    });
     return user;
   }
-
 }
 
 export const userUseCases = new UserUseCases();
