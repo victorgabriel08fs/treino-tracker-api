@@ -22,8 +22,8 @@ const options = {
   };
   
   // Criar o servidor HTTPS
-  https.createServer(options, app).listen(PORT, () => {
-    console.log(`Servidor rodando em https://treinamente-api.duckdns.org:${PORT}`);
+  https.createServer(options, app).listen(HTTPS_PORT, () => {
+    console.log(`Servidor rodando em https://treinamente-api.duckdns.org:${HTTPS_PORT}`);
   });
 }
 
