@@ -11,7 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 3000
+const HTTPS_PORT = process.env.PORT || 3000
+const HTTP_PORT = process.env.HTTP_PORT || 3001
 
 if(process.env.APP_ENV && process.env.APP_ENV === 'production') {
     // Carregar os certificados SSL
@@ -28,5 +29,5 @@ const options = {
 
 app.use('/api', errorMiddleware.handle, routes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(HTTP_PORT, () => console.log(`Server running on port ${HTTP_PORT}`));
 
