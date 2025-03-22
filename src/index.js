@@ -13,7 +13,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000
 
-if(process.env.APP_ENV){
+if(process.env.APP_ENV && process.env.APP_ENV === 'production') {
     // Carregar os certificados SSL
 const options = {
     key: fs.readFileSync("/etc/letsencrypt/live/treinamente-api.duckdns.org/privkey.pem"),
