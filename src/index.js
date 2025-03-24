@@ -14,16 +14,16 @@ app.use(cors());
 const HTTPS_PORT = process.env.PORT || 3000
 const HTTP_PORT = process.env.HTTP_PORT || 3001
 
-if(process.env.APP_ENV && process.env.APP_ENV === 'production') {
+if(process.env.APP_ENV && process.env.APP_ENV === 'production' && process.env.DOMAIN) {
     // Carregar os certificados SSL
 const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/treinamente-api.duckdns.org/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/treinamente-api.duckdns.org/fullchain.pem"),
+    key: fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/privkey.pem`),
+    cert: fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/fullchain.pem`),
   };
   
   // Criar o servidor HTTPS
   https.createServer(options, app).listen(HTTPS_PORT, () => {
-    console.log(`Servidor rodando em https://treinamente-api.duckdns.org:${HTTPS_PORT}`);
+    console.log(`Servidor rodando em https://${process.env.DOMAIN}:${HTTPS_PORT}`);
   });
 }
 
